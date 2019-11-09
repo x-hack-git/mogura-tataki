@@ -123,60 +123,71 @@
 	</div>
 
 	<script>
+		//var test;
 		// 全てのもぐらに、クリックイベントを登録する
 		const moguras = document.querySelectorAll(".mogura");
-		var score = 0;
+		const itaiMogura = "images/モグ1.png";
+		const normalMogura = "images/モグ2.png";
+		setInterval(deruMogura, 1000);
 
-		for (let index = 0; index < moguras.length; index++) {
-			new moguraObj(moguras[index]);
-		}
+		// 0:hide, 1:show, 2:press
 
-		start();
+		let gameController = new GameController();
 
-		function start() {
-			let interval = setInterval(() => {
-				let random = Math.floor(Math.random() * 9);
-				moguras[random].showMogura();
-			}, 300);
-
-			setTimeout(() => {
-				clearTimeout(interval);
-				alert("ゲーム終了 スコア:" + score);
-			}, 30000);
-		}
-
-		function moguraObj(image) {
-			const HIT_MOGURA = "images/モグ1.png";
-			const NORMAL_MOGURA = "images/モグ2.png";
-			const STATUS = {
-				HIDE: 0,
-				SHOW: 1,
-				PRESS: 2
+		function GameController(){
+			let allMogura = []
+			for (let index = 0; index < moguras.length; index++) {
+		  	allMogura.push(new moguraObj(moguras[index]));
 			}
-			image.status = STATUS.HIDE;
+		}
+
+		function moguraObj(image){
+			let status = 0; // 0:hide, 1:show, 2:press
 
 			image.onclick = function () {
-				score++;
-				image.status = STATUS.PRESS;
-				this.src = HIT_MOGURA;
-				clearTimeout(this.autoHide)
-				setTimeout((image) => { image.hideMogura() }, 500, this);
+				image.src = itaiMogura;
+				image.moguraStatus = 2;
+				setTimeout(kakureruMogura, 700, image);
 			}
 
-			image.hideMogura = function () {
-				image.status = STATUS.HIDE;
-				this.src = "";
+			image.kakureru = function(){
+
+			}
+			iamge.setImage = function(imageUrl){
+				iamge.src = imageUrl;
 			}
 
-			image.showMogura = function () {
-				if (image.status != STATUS.HIDE) {
-					return false;
+			// もぐらが叩かれる
+			function hitMogura() {
+				var mogura = event.target;
+				mogura.src = itaiMogura;
+				mogura.moguraStatus = 2;
+				setTimeout(kakureruMogura, 700, mogura);
+			}
+		}
+
+
+
+		// // もぐらが戻る
+		// function modoruMogura(mogura){
+		// 	mogura.src = "images/モグ2.png"; 
+		// }
+
+		// もぐらが隠れる(消える)
+		function kakureruMogura(mogura) {
+			mogura.src = "";
+		}
+
+		function deruMogura() {
+			var random = Math.floor(Math.random() * 9);
+			var mogura = moguras[random];
+			mogura.src = normalMogura;
+			// しばらくしたら隠れる
+			setTimeout((mogura) => {
+				if (mogura.moguraStatus != 2) {
+					kakureruMogura(mogura);
 				}
-				image.status = STATUS.SHOW;
-				this.src = NORMAL_MOGURA;
-				this.autoHide = setTimeout((image) => { image.hideMogura() }, 500 + 2000 * Math.random(), this);
-				return true;
-			}
+			}, 600, mogura);
 		}
 	</script>
 </body>
