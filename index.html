@@ -9,8 +9,8 @@
 
 <body id="game">
 	<div class="field">
-		<h1><img onmouseover="hello()" src="images/title.png" alt=""></h1>
-
+		<h1><img src="images/title.png" alt=""></h1>
+		<h2 id="counter">0</h2>
 		<div class="container">
 			<div class="relative">
 				<img class="ana" src="images/穴.png">
@@ -57,29 +57,42 @@
 
 	<script>
 		let moguras = []
+		let hitCount = 0
+
+		let counter = document.getElementById("counter")
+		counter.countUp = () => {
+			hitCount += 1
+			counter.innerText = hitCount
+		}
 
 		function Mogura (el) {
 			this.body = el
-			this.face = {
+
+			let face = {
 				hide: "", // 隠れている時
 				normal: "images/mogura/normal.png", // 出現した時
 				hit: "images/mogura/hit.png", // 叩かれた時
-			},
+			}
 
 			this.hit = () => {
-				this.body.src = this.face.hit
-				setTimeout(this.hide, 200)
+				this.body.src = face.hit
+				setTimeout(this.hide, 200) // 200ms後に隠れる
+				counter.countUp()
 			}
 			this.appear = () => {
-				this.body.src = this.face.normal
+				this.body.src = face.normal
 			}
 			this.hide = () => {
-				this.body.src = this.face.hide
-				setTimeout(this.appear, 3000 * Math.random())
+				this.body.src = face.hide
+				this.timeoutId = setTimeout(this.appear, 3000 * Math.random()) // 0ms ~ 3000ms で再び現れる
+			}
+			this.clear = () => {
+				this.body.src = face.hide
+				clearTimeout(this.timeoutId)
 			}
 
 			this.hide()
-			this.body.onclick = this.hit
+			this.body.onclick = this.hit // クリック時の処理
 		}
 
 		function initialize () {
@@ -88,6 +101,11 @@
 			for (let i=0; i < arr.length; i ++) {
 				moguras.push(new Mogura(arr[i]))
 			}
+
+			setTimeout(() => { 
+				alert("あなたが退治したモグラは" + hitCount + "です")
+				window.location.href = './game_end.html'
+			}, 5000)
 		}
 
 		initialize ()
