@@ -4,80 +4,13 @@
 <head>
 	<meta charset="utf-8">
 	<title>もぐらたたきゲーム</title>
-	<style media="screen">
-		#game {
-			cursor: url(./images/hummer.cur) 40 40, auto;
-		}
-
-		h1 {
-			text-align: center;
-			margin: auto 0px;
-			background: rgba(140, 248, 155, 0.7);
-		}
-
-		h1>img {
-			width: 320px;
-		}
-
-		body {
-			margin: 0px auto;
-			background-image: url(./images/草-noitem.png);
-			background-repeat: no-repeat;
-			background-attachment: fixed;
-			background-position: center;
-			background-size: cover;
-		}
-
-		.container {
-			width: 520px;
-			height: 160px;
-			margin: 20px auto;
-			text-align: center;
-			display: -webkit-flex;
-			display: -moz-flex;
-			display: -ms-flex;
-			display: -o-flex;
-			display: flex;
-		}
-
-		.container img {
-			margin: 20px;
-			width: 140px;
-		}
-
-		.wrapper {
-			margin: 0px auto;
-			display: flex;
-		}
-
-		img {
-			width: 213px;
-		}
-
-		.hit-mogura {
-			cursor: url(./images/hummer2.cur) 20 20, auto;
-		}
-
-		.uwagaki {
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
-
-		.relative {
-			position: relative;
-		}
-
-		.field {
-			margin: 40px;
-		}
-	</style>
-
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 
 <body id="game">
 	<div class="field">
-		<h1><img src="images/title.png" alt=""></h1>
+		<h1><img onmouseover="hello()" src="images/title.png" alt=""></h1>
+
 		<div class="container">
 			<div class="relative">
 				<img class="ana" src="images/穴.png">
@@ -123,6 +56,42 @@
 	</div>
 
 	<script>
+		let moguras = []
+
+		function Mogura (el) {
+			this.body = el
+			this.face = {
+				hide: "", // 隠れている時
+				normal: "images/mogura/normal.png", // 出現した時
+				hit: "images/mogura/hit.png", // 叩かれた時
+			},
+
+			this.hit = () => {
+				this.body.src = this.face.hit
+				setTimeout(this.hide, 200)
+			}
+			this.appear = () => {
+				this.body.src = this.face.normal
+			}
+			this.hide = () => {
+				this.body.src = this.face.hide
+				setTimeout(this.appear, 3000 * Math.random())
+			}
+
+			this.hide()
+			this.body.onclick = this.hit
+		}
+
+		function initialize () {
+			// 全てのモグラに対して、クリックされたイベントを登録する
+			let arr = document.getElementsByClassName("mogura") // 9体分のモグラ
+			for (let i=0; i < arr.length; i ++) {
+				moguras.push(new Mogura(arr[i]))
+			}
+		}
+
+		initialize ()
+
 	</script>
 </body>
 
