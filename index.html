@@ -67,27 +67,53 @@
 
 		function Mogura (el) {
 			this.body = el
-
-			let face = {
-				hide: "", // 隠れている時
-				normal: "images/mogura/normal.png", // 出現した時
-				hit: "images/mogura/hit.png", // 叩かれた時
+			this.face = {}
+			if(Math.random() > 0.5){
+				this.face = {
+					hide: "", // 隠れている時
+					normal: "images/mogura/normal.png", // 出現した時
+					hit: "images/mogura/hit.png", // 叩かれた時
+				}
+			}else{
+				this.face = {
+					hide: "", // 隠れている時
+					normal: "images/mogura2/normal.png", // 出現した時
+					hit: "images/mogura2/hit.png", // 叩かれた時
+				}
 			}
-
 			this.hit = () => {
-				this.body.src = face.hit
+				this.body.src = this.face.hit
 				setTimeout(this.hide, 200) // 200ms後に隠れる
 				counter.countUp()
 			}
 			this.appear = () => {
-				this.body.src = face.normal
+				this.body.src = this.face.normal
 			}
 			this.hide = () => {
-				this.body.src = face.hide
+				this.body.src = this.face.hide
+				if(Math.random() > 0.7){
+					this.face = {
+						hide: "", // 隠れている時
+						normal: "images/mogura/normal.png", // 出現した時
+						hit: "images/mogura/hit.png", // 叩かれた時
+					}
+				}else if(Math.random() > 0.3){
+					this.face = {
+						hide: "", // 隠れている時
+						normal: "images/mogura2/normal.png", // 出現した時
+						hit: "images/mogura2/hit.png", // 叩かれた時
+					}
+				}else{
+					this.face = {
+						hide: "", // 隠れている時
+						normal: "images/mogura3/normal.png", // 出現した時
+						hit: "images/mogura3/hit.png", // 叩かれた時
+					}
+				}
 				this.timeoutId = setTimeout(this.appear, 3000 * Math.random()) // 0ms ~ 3000ms で再び現れる
 			}
 			this.clear = () => {
-				this.body.src = face.hide
+				this.body.src = this.face.hide
 				clearTimeout(this.timeoutId)
 			}
 
@@ -105,7 +131,7 @@
 			setTimeout(() => { 
 				alert("あなたが退治したモグラは" + hitCount + "です")
 				window.location.href = './game_end.html'
-			}, 5000)
+			}, 25000)
 		}
 
 		initialize ()
