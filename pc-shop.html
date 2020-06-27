@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="pc-list">
+    パソコン
+  </div>
+
+  <div id="mouse-list">
+    マウス
+  </div>
+
+  <div id="monitor-list">
+    モニター
+  </div>
+
+  <script>
+    // DBからとってきたと仮定して
+    let personalComputers = [
+      {
+        displayName: "",
+        maker: "MicroSoft",
+        機種: "Surface",
+        シリアル番号: "1231-ADAA-1231",
+        値段: 100000,
+        画像: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3oQuB"
+      },
+      {
+        displayName: "",
+        maker: "Apple",
+        機種: "Mac Book Pro",
+        シリアル番号: "1231-ADAA-345364",
+        値段: 160000,
+        画像: "https://www.pc-koubou.jp/kaitori/re/images/macbook_icon_01.png"
+      },
+      {
+        displayName: "",
+        maker: "東芝",
+        機種: "NoteBook",
+        シリアル: "4253-ADAA-AFEW",
+        price: 210000,
+        画像: "https://img1.kakaku.k-img.com/images/productimage/fullscale/K0001248408.jpg"
+      }
+    ]
+
+    let mouses = [
+      {
+        maker: "LogiCool",
+        機種: "M501",
+        price: 5000,
+        画像: "https://img1.kakaku.k-img.com/images/productimage/fullscale/K0001248408.jpg",
+        重さ: "",
+        有線: "いいえ"
+      },
+      {
+        maker: "LogiCool",
+        機種: "M502",
+        price: 5000,
+        画像: "https://img1.kakaku.k-img.com/images/productimage/fullscale/K0001248408.jpg",
+        重さ: "",
+        有線: false
+      },
+    ]
+    let monitors = []
+
+    const PC_LIST = document.getElementById("pc-list")
+    const MOUSE_LIST = document.getElementById("mouse-list")
+
+    // パソコンのデータを画面に表示する関数(クラスっぽいもの)
+    function PC_INFORMATION (item, rootObject) 
+    {
+      // データ
+      this.rootObject = rootObject
+      this.displayName = item.displayName
+      this.maker = item.maker
+      this.シリアル番号 = item.シリアル番号
+      this.値段 = item.値段
+      this.画像1 = item.画像
+      this.画像2 = item.画像
+      this.category = "パソコン"
+
+      // 見た目の部分
+      const SECTION = document.createElement("section")
+      SECTION.style.backgroundColor = "#EEEEEE"
+
+      SECTION.innerHTML = `
+        <h2 class="itemName"> ${this.maker} </h2>
+        <h4 class="itemDescriptin"> ${this.maker} </h4>
+        <p class="itemPrice"> ${this.値段} </p>
+        <p class="itemImage">
+          商品の画像
+          <img width="400" src="${this.画像1}"> 
+          <img width="400" src="${this.画像2}"> 
+        </p>
+        <span>${this.category}</span>
+      `
+      this.rootObject.append(SECTION)
+    }
+
+    // マウスのデータを画面に表示する関数
+    function MOUSE_INFOMATION(item, rootObject){
+      // データ
+      this.rootObject = rootObject
+      this.displayName = item.displayName
+      this.maker = item.maker
+      this.機種 = item.機種
+      this.price = item.price
+      this.画像 = item.画像
+      this.category = "マウス"
+      this.有線 = item.有線
+
+      // 見た目の部分
+      const SECTION = document.createElement("section")
+      SECTION.style.backgroundColor = "#EEBBEE"
+
+      SECTION.innerHTML = `
+        <h2 class="itemName"> ${this.maker} </h2>
+        <h4 class="itemDescriptin"> ${this.maker} </h4>
+        <p class="itemPrice"> ${this.値段} </p>
+        <p class="itemImage">
+          商品の画像
+          <img width="400" src="${this.画像}"> 
+        </p>
+        <span>${this.category}</span>
+      `
+      this.rootObject.append(SECTION)
+    }
+
+    // モニターのデータを画面に表示する関数
+    function MONITOR_INFOMATION(item, rootObject){
+
+    }
+
+    // new をつけてこの関数を引数つけて呼び出すと、新しいオブジェクトが作られる
+    // new PC_INFORMATION("PC一号", "東芝", "12345", 280000, "xxx/xxx")
+
+    for (let i=0; i<personalComputers.length; i++) {
+      let item = personalComputers[i]
+      let obj = new PC_INFORMATION(item, PC_LIST)
+    }
+
+    for (let i=0; i<mouses.length; i++) {
+      let item = mouses[i]
+      let obj = new MOUSE_INFOMATION(item, MOUSE_LIST)
+    }
+
+    for (let i=0; i<monitors.length; i++) {
+      let item = monitors[i]
+      let obj = new MONITOR_INFOMATION(item, PC_LIST)
+    }
+  </script>
+</body>
+
+</html>
